@@ -1,7 +1,7 @@
 import io
 from typing import Annotated
 from PIL import Image
-from fastapi import FastAPI, File, UploadFile, Form
+from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 import uvicorn
@@ -37,7 +37,7 @@ def chat(query: str):
     return answer
 
 
-@app.get("rag")
+@app.get("/rag")
 def rag(query: str, tags: str = ""):
     answer = pipeline.rag(query, tags)
     print(answer)
@@ -73,8 +73,9 @@ def insert(file: UploadFile = File(...), tags: Annotated[str, Form()] = "", id: 
             image.save(path, format='JPEG')
             documents = document_loader.load(path, 'image')
     except Exception as e:
-        return {"error": str(e)}
+        raise HTTPException(status_code=500, detail=f"Error processing the file \n {e}")
 
+    print("Number of documents", len(documents))
     for doc in documents:
         doc.metadata = {
             "id": id,
@@ -82,6 +83,9 @@ def insert(file: UploadFile = File(...), tags: Annotated[str, Form()] = "", id: 
             "filename": file.filename
         }
         pipeline.insert(doc)
+
+    # delete the file
+    os.remove(path)
 
     return {"document": "ok"}
 
@@ -91,11 +95,12 @@ class UpdateRequest(BaseModel):
     filename: str
     tags: str
 
-@app.post("/update")
-def update(request: UpdateRequest):
-    id = request.id
-    filename = request.filename
-    tags = request.tags
+
+@app.get("/update")
+def update(id: str, filename: str, tags: str):
+    # id = request.id
+    # filename = request.filename
+    # tags = request.tags
     print("Update", id, filename, tags)
     pipeline.update_documents(id, filename, tags)
     return {"document": "ok"}
@@ -104,9 +109,10 @@ def update(request: UpdateRequest):
 class DeleteRequest(BaseModel):
     id: str
 
-@app.post("/delete")
-def delete(request: DeleteRequest):
-    id = request.id
+
+@app.delete("/delete")
+def delete(id: str):
+    # id = request.id
     print("Delete", id)
     pipeline.delete_documents(id)
     return {"document": "ok"}

@@ -53,5 +53,6 @@ class DocumentLoader:
             clean=True,
             clean_final=True,
             deskew=True,
+            invalidate_digital_signatures=True,
         )
         return self.load_pdf(path)
