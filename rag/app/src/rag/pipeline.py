@@ -190,3 +190,17 @@ class Pipeline:
     def insert(self, document):
         self.vector_store.add_documents([document])
         self.retriever = load_retriver(vector_store=self.vector_store, mongo_db=self.mongodb)
+
+    def update_documents(self, id, new_filename, new_tags):
+        # update all documents with the same id
+        self.mongodb.collection.update_many({"id": id}, {"$set": {"filename": new_filename, "tags": new_tags}})
+        # update retriever
+        self.retriever = load_retriver(vector_store=self.vector_store, mongo_db=self.mongodb)
+
+    def delete_documents(self, id):
+        # delete all documents with the same id
+        self.mongodb.collection.delete_many({"id": id})
+        # update retriever
+        self.retriever = load_retriver(vector_store=self.vector_store, mongo_db=self.mongodb)
+
+

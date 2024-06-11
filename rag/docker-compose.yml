@@ -3,7 +3,7 @@ services:
     image: mongodb/mongodb-atlas-local
     container_name: mongodb
     env_file:
-      - app/.env
+      - .env
     ports:
       - 27777:27017
     volumes:
@@ -15,7 +15,7 @@ services:
 
   app:
     build:
-      dockerfile: ./app/Dockerfile
+      dockerfile: ./Dockerfile
     ports:
       - 8000:8000
     depends_on:
@@ -23,7 +23,7 @@ services:
         condition: service_healthy
         restart: true
     env_file:
-      - app/.env
+      - .env
     container_name: app
     restart: always
     networks:

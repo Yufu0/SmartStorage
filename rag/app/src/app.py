@@ -12,7 +12,7 @@ from rag import Pipeline, DocumentLoader
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],
+    allow_origins=[os.getenv("BACKEND_URL")],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -35,7 +35,7 @@ def chat(query: str):
     return answer
 
 
-@app.get("/rag")
+@app.get("rag")
 def rag(query: str, tags: str = ""):
     answer = pipeline.rag(query, tags)
     print(answer)
@@ -81,6 +81,18 @@ def insert(file: UploadFile = File(...), tags: Annotated[str, Form()] = "", id: 
         }
         pipeline.insert(doc)
 
+    return {"document": "ok"}
+
+
+@app.post("/update")
+def update(id: str, filename: str, tags: str):
+    pipeline.update_documents(id, filename, tags)
+    return {"document": "ok"}
+
+
+@app.get("/delete")
+def delete(id: str):
+    pipeline.delete_documents(id)
     return {"document": "ok"}
 
 
