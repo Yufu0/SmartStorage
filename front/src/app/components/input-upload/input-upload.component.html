@@ -1,0 +1,4 @@
+<div class="input-container">
+    <label [class.focus]="focus">{{ placeholder }}</label>
+    <input #input [type]="type" [(ngModel)]="fieldValue" (ngModelChange)="onValueChange()" (focus)="onFocus()" (keydown)="onKeyPress($event)">
+</div>

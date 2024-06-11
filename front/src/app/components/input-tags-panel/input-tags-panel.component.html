@@ -1,0 +1,7 @@
+<div class="input-container">
+    <label [class.focus]="focus">{{ placeholder }}</label>
+    <input #input [type]="type" [(ngModel)]="tag.label" (ngModelChange)="onValueChange()" (focus)="onFocus()" (keydown)="onKeyPress($event)">
+</div>
+<app-color-picker
+    (onSelect)="onColorSelected($event)"
+></app-color-picker>

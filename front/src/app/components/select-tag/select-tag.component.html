@@ -1,0 +1,12 @@
+<div class="select-container" [class.inDarkBackground]="inDarkBackground">
+    <input #input class="select-input" type="text" [class.expanded]="isExpanded" [(ngModel)]="currentTagLabel" (ngModelChange)="onValueChange()" (click)="onClick()" [placeholder]="placeholder">
+
+    <div class="select-tags-list" *ngIf="isExpanded">
+        <ng-template ngFor let-tag [ngForOf]="getFilteredTags()">
+            <div class="tag-item" (click)="onTagSelected(tag)">
+                <div class="tag-marker" [style.background-color]="tag.color"></div>
+                <div class="tag-label">{{tag.label}}</div>
+            </div>
+        </ng-template>
+    </div>
+</div>

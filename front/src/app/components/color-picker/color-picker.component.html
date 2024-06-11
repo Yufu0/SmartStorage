@@ -1,0 +1,10 @@
+<div class="colors-picker-container">
+    <ng-template ngFor let-color [ngForOf]="colors">
+        <div
+            class="color-item"
+            [class.selected]="color === currentColor"
+            [style.background-color]="color"
+            (click)="onColorSelected(color)">
+        </div>
+    </ng-template>
+</div>

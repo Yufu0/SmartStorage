@@ -1,0 +1,69 @@
+.file-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--dark-black);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.file-item-center-container {
+    width: 70%;
+    cursor: pointer;
+}
+
+.file-item-center-container img {
+    display: none;
+    width: 100%;
+}
+
+.file-item-center-container img.display {
+    display: block;
+}
+
+.file-item-center-container .delete-icon {
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.tags-list:has(.tag-item) {
+    margin-top: 10px;
+}
+
+.tag-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--black);
+    padding: 5px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.tag-delete {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: color-mix(in srgb, var(--black), transparent 10%);
+    transform: translateY(100%);
+    transition: transform 0.5s ease;
+}
+
+.tag-item:hover .tag-delete {
+    transform: translateY(0);
+}
