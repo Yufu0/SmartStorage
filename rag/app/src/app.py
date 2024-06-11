@@ -7,6 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import os
 
+from pydantic import BaseModel
+
 from rag import Pipeline, DocumentLoader
 
 app = FastAPI()
@@ -84,14 +86,28 @@ def insert(file: UploadFile = File(...), tags: Annotated[str, Form()] = "", id: 
     return {"document": "ok"}
 
 
+class UpdateRequest(BaseModel):
+    id: str
+    filename: str
+    tags: str
+
 @app.post("/update")
-def update(id: str, filename: str, tags: str):
+def update(request: UpdateRequest):
+    id = request.id
+    filename = request.filename
+    tags = request.tags
+    print("Update", id, filename, tags)
     pipeline.update_documents(id, filename, tags)
     return {"document": "ok"}
 
 
-@app.get("/delete")
-def delete(id: str):
+class DeleteRequest(BaseModel):
+    id: str
+
+@app.post("/delete")
+def delete(request: DeleteRequest):
+    id = request.id
+    print("Delete", id)
     pipeline.delete_documents(id)
     return {"document": "ok"}
 
