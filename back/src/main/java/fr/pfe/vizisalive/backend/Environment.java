@@ -1,7 +1,7 @@
 package fr.pfe.vizisalive.backend;
 
 public final class Environment {
-    public static String KNOW_HOSTS_FILE = System.getenv("KNOW_HOSTS_FILE");
+    public static final String KNOW_HOSTS_FILE = System.getenv("KNOW_HOSTS_FILE");
 
     public static final String RAG_HOST = System.getenv("RAG_HOST");
     public static final String RAG_PORT = System.getenv("RAG_PORT");
