@@ -2,7 +2,8 @@ version: '3'
 
 services:
     sftp:
-        build: .
+        build:
+            dockerfile: ./Dockerfile_SFTP
         env_file:
             - .env
         command: ${SFTP_USERNAME}:${SFTP_PASSWORD}:${SFTP_PORT}
