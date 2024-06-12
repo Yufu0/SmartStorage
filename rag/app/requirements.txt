@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+pillow
+
+langchain
+langchain-community
+langchain-core
+langchain-mongodb
+pymongo
+langgraph
+pymupdf4llm
+ocrmypdf
+fitz
+rank_bm25

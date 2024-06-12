@@ -1,0 +1,4 @@
+FROM ollama/ollama:latest
+
+# pull all models
+RUN ollama serve & sleep 5 ; ollama pull llama3 ; ollama pull mxbai-embed-large ;

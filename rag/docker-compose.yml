@@ -1,0 +1,62 @@
+services:
+  mongodb:
+    image: mongodb/mongodb-atlas-local
+    container_name: mongodb
+    env_file:
+      - .env
+    ports:
+      - 27777:27017
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    restart: always
+    networks:
+      - net
+
+  app:
+    build:
+      dockerfile: ./Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    env_file:
+      - .env
+    container_name: app
+    restart: always
+    networks:
+      - net
+
+
+  ollama:
+    build:
+      dockerfile: ./Dockerfile-ollama
+    ports:
+      - 4444:11434
+    volumes:
+      - ollama_volume:/root/.ollama
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    restart: always
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - net
+
+
+volumes:
+  mongodb_data:
+  mongodb_config:
+  ollama_volume:
+
+networks:
+  net:
+    driver: bridge
+
