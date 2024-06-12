@@ -21,7 +21,6 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy
-        restart: true
     env_file:
       - .env
     container_name: app
@@ -31,15 +30,23 @@ services:
 
 
   ollama:
-    image: ollama/ollama:latest
+    build:
+      dockerfile: ./Dockerfile-ollama
     ports:
       - 4444:11434
     volumes:
-      - ollama_vol:/root/.ollama
+      - ollama_volume:/root/.ollama
     container_name: ollama
     pull_policy: always
     tty: true
     restart: always
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     networks:
       - net
 
@@ -47,7 +54,7 @@ services:
 volumes:
   mongodb_data:
   mongodb_config:
-  ollama_vol:
+  ollama_volume:
 
 networks:
   net:
