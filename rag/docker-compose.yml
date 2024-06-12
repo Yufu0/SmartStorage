@@ -1,9 +1,9 @@
 services:
-  mongodb:
+  rag-mongodb:
     image: mongodb/mongodb-atlas-local
-    container_name: mongodb
+    container_name: rag-mongodb
     env_file:
-      - .env
+      - ../.env
     ports:
       - 27777:27017
     volumes:
@@ -11,7 +11,7 @@ services:
       - mongodb_config:/data/configdb
     restart: always
     networks:
-      - net
+      - rag-net
 
   app:
     build:
@@ -19,14 +19,17 @@ services:
     ports:
       - 8000:8000
     depends_on:
-      mongodb:
+      rag-mongodb:
         condition: service_healthy
+      ollama:
+        condition: service_started
+
     env_file:
-      - .env
+      - ../.env
     container_name: app
     restart: always
     networks:
-      - net
+      - rag-net
 
 
   ollama:
@@ -48,7 +51,7 @@ services:
               count: 1
               capabilities: [gpu]
     networks:
-      - net
+      - rag-net
 
 
 volumes:
@@ -57,6 +60,6 @@ volumes:
   ollama_volume:
 
 networks:
-  net:
+  rag-net:
     driver: bridge
 
