@@ -32,9 +32,6 @@ public class AuthController {
     @Autowired
     JWTService jwtService;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
     @PostMapping("/login")
     public ResponseEntity<Void> authenticateUser(@Valid @RequestBody AuthModel authModel) {
 
@@ -50,18 +47,6 @@ public class AuthController {
         ResponseCookie jwtCookie = jwtService.generateJwtCookie(userDetails);
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).build();
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody AuthModel authModel) {
-        if (mongoService.findUser(authModel.username()) != null)
-            return ResponseEntity.badRequest().body("Error: Username is already taken!");
-
-        CustomUserDetailsModel user = new CustomUserDetailsModel(authModel.username(), passwordEncoder.encode(authModel.password()));
-
-        mongoService.addUser(user);
-
-        return ResponseEntity.ok("User registered successfully!");
     }
 
     @PostMapping("/logout")

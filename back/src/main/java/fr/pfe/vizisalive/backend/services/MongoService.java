@@ -115,20 +115,6 @@ public class MongoService {
         }
     }
 
-    public void addUser(CustomUserDetailsModel user) {
-        try {
-            MongoCollection<Document> collection = database.getCollection(Environment.MONGO_COLLECTION_USERS);
-
-            Document document = new Document();
-            document.append("username", user.username());
-            document.append("password", user.password());
-
-            collection.insertOne(document);
-        } catch (Exception e) {
-            System.out.println("MongoDB insert failed");
-        }
-    }
-
     public List<TagModel> getTags() {
         MongoCollection<Document> collection = database.getCollection(Environment.MONGO_COLLECTION_TAGS);
         return collection.find().into(new ArrayList<>()).stream()
