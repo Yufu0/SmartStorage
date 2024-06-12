@@ -4,7 +4,7 @@ FROM python:3.11
 WORKDIR /app
 
 # Copy the current directory contents into the container at /app
-COPY app/requirements.txt /app
+COPY rag/requirements.txt /app
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
@@ -17,7 +17,7 @@ RUN apt install tesseract-ocr-fra -y
 
 
 # Copy the current directory contents into the container at /app
-COPY ./app/src /app/src
+COPY rag/src /app/src
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000

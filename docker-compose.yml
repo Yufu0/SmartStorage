@@ -19,8 +19,10 @@ services:
         container_name: mongodb
         ports:
             - "51512:27017"
-        env_file:
-            - .env
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME_APP}
+            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD_APP}
+            MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE_APP}
         volumes:
             - mongodb:/data/db
             - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
@@ -48,13 +50,70 @@ services:
             - .env
         networks:
             - app-net
+            - rag-net
         command: bash -c "ssh-keyscan -H -t rsa,ecdsa -p 22 sftp >> /usr/src/app/known_hosts && mvn spring-boot:run"
         depends_on:
             - mongodb
             - sftp
+    rag-mongodb:
+        image: mongodb/mongodb-atlas-local
+        container_name: rag-mongodb
+        env_file:
+            - .env
+        ports:
+            - 27777:27017
+        volumes:
+            - mongodb_data:/data/db
+            - mongodb_config:/data/configdb
+        restart: always
+        networks:
+            - rag-net
+    rag:
+        build:
+            dockerfile: ./rag/Dockerfile
+        ports:
+            - 8000:8000
+        depends_on:
+            rag-mongodb:
+                condition: service_healthy
+            ollama:
+                condition: service_started
+        env_file:
+            - .env
+        container_name: rag
+        restart: always
+        networks:
+            - rag-net
+    ollama:
+        build:
+            dockerfile: ./Dockerfile_OLLAMA
+        ports:
+            - 4444:11434
+        volumes:
+            - ollama_volume:/root/.ollama
+        env_file:
+            - .env
+        container_name: ollama
+        tty: true
+        restart: always
+        deploy:
+            resources:
+                reservations:
+                    devices:
+                        - driver: nvidia
+                          count: 1
+                          capabilities: [ gpu ]
+        networks:
+            - rag-net
 networks:
     app-net:
+    rag-net:
+
 
 volumes:
     mongodb:
     sftp:
+    mongodb_data:
+    mongodb_config:
+    ollama_volume:
+
