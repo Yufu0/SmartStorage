@@ -1,0 +1,34 @@
+<div class="file-item">
+    <app-input-upload
+        [placeholder]="'Name'"
+        [type]="'text'"
+        [(fieldValue)]="file!.name"
+    ></app-input-upload>
+
+    <div class="file-item-center-container"
+         (mouseenter)="onMouseEnter()"
+         (mouseleave)="onMouseLeave()"
+    >
+        <img [class.display]="!isHovered" class="file-icon" src="assets/document.svg" alt="document icon">
+        <img [class.display]="isHovered" class="delete-icon" src="assets/bin.svg" alt="delete icon" (click)="removeFile()">
+    </div>
+
+    <div class="tags-container">
+        <app-select-tag
+            [tagsList]="tagsList"
+            [filterTags]="file.tags"
+            [inDarkBackground]="true"
+            [placeholder]="'Add tag'"
+            (onSubmit)="addTag($event)"
+        ></app-select-tag>
+        <div class="tags-list">
+            <ng-template ngFor let-tag [ngForOf]="file.tags">
+                <div class="tag-item">
+                    <div class="tag-label" [style.color]="tag.color">{{ tag.label }}</div>
+                    <img class="tag-delete" src="assets/bin.svg" alt="delete icon" (click)="removeTag(tag)">
+                </div>
+            </ng-template>
+        </div>
+
+    </div>
+</div>

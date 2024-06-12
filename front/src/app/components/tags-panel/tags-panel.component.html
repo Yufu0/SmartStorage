@@ -1,0 +1,27 @@
+<div class="panel-container">
+    <div class="tags-input-container">
+        <app-input-tags-panel
+            [placeholder]="'Add a tag'"
+            [type]="'text'"
+            [(tag)]="newTag"
+            (onSubmit)="addTag()"
+        ></app-input-tags-panel>
+    </div>
+
+    <div class="tags-list-container">
+        <ng-template ngFor let-tag [ngForOf]="tags">
+            <div class="tag-item">
+                <div class="tag-label" [style.color]="tag.color">{{ tag.label }}</div>
+                <img class="tag-delete" src="assets/bin.svg" alt="delete icon" (click)="removeTag(tag)">
+            </div>
+        </ng-template>
+    </div>
+
+    <div class="close-button-container">
+        <button class="close-button" (click)="closePanel()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 53 52" fill="none">
+                <path d="M4 48L48 4M5 4L49 48" stroke="white" opacity="1" stroke-width="7" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </div>
+</div>

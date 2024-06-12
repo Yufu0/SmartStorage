@@ -1,0 +1,23 @@
+<div class="status-container">
+    <div class="status">
+        <span>{{ label }}</span>
+        <div class="color-indicator" [ngClass]="status" [ngSwitch]="status">
+            <div class="status-icon" *ngSwitchCase="Status.CONNECTED">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="white">
+                    <path d="M12,0C5.373,0,0,5.373,0,12c0,6.628,5.373,12,12,12c6.627,0,12-5.372,12-12C24,5.373,18.627,0,12,0z M19.754,9.561
+                     l-8.607,8.607c-0.176,0.177-0.462,0.177-0.637,0l-1.272-1.285c-0.175-0.176-0.462-0.464-0.636-0.642l-2.96-3.112
+                     c-0.087-0.087-0.133-0.21-0.133-0.327c0-0.115,0.046-0.227,0.133-0.314l1.297-1.169c0.088-0.09,0.205-0.134,0.321-0.134
+                     c0.114,0.001,0.228,0.046,0.315,0.134l2.936,2.995c0.175,0.178,0.461,0.178,0.637,0l6.699-6.681c0.176-0.177,0.461-0.177,0.636,0
+                     l1.272,1.285C19.93,9.094,19.93,9.384,19.754,9.561z"/>
+                </svg>
+            </div>
+            <div class="status-icon" *ngSwitchCase="Status.DISCONNECTED">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" height="24px" viewBox="0 0 16 16" width="24px">
+                    <path clip-rule="evenodd"
+                          d="M8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16ZM4.29289 5.70711L6.58579 8L4.29289 10.2929L5.70711 11.7071L8 9.41421L10.2929 11.7071L11.7071 10.2929L9.41421 8L11.7071 5.70711L10.2929 4.29289L8 6.58579L5.70711 4.29289L4.29289 5.70711Z"
+                          fill="white" fill-rule="evenodd"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>

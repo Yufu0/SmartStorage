@@ -1,0 +1,32 @@
+.slider-container {
+    position: relative;
+    display: flex;
+    width: 100px;
+    height: 100%;
+    background-color: var(--dark-black);
+    border-radius: 30px;
+}
+
+.slider-marker {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 5px;
+    left: 5px;
+    height: 40px;
+    width: 40px;
+    background-color: var(--black);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: left 0.5s, background-color 0.5s;
+    color: var(--white);
+    font-size: 1.3rem;
+    font-weight: bold;
+    /*box-shadow: 0 0 3px var(--white);*/
+}
+
+.slider-marker.active {
+    left: 55px;
+    background-color: var(--green);
+}

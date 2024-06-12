@@ -1,0 +1,15 @@
+<div class="logs-container">
+    <ng-template ngFor let-log [ngForOf]="logs">
+        <div class="log">
+            <div class="level" [ngClass]="log.logLevel">{{log.logLevel}}</div>
+            <div class="message">{{log.message}}</div>
+            <div class="time">{{log.timestamp | date:'MMMM d, y, h:mm:ss'}}</div>
+        </div>
+    </ng-template>
+
+    <div class="home-button">
+        <a routerLink="/home">
+            <img src="assets/home.svg" alt="Home" />
+        </a>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+<div [class.edit]="status === DocumentStatus.EDIT" class="document">
+
+    <div *ngIf="status !== DocumentStatus.EDIT" class="filename">{{ document.filename }}</div>
+
+    <app-input-upload
+        *ngIf="status === DocumentStatus.EDIT"
+        [placeholder]="'Name'"
+        [type]="'text'"
+        [(fieldValue)]="document.filename"
+    ></app-input-upload>
+
+    <div class="document-center-container"
+         (mouseenter)="onMouseEnter()"
+         (mouseleave)="onMouseLeave()"
+         [ngSwitch]="status"
+    >
+        <div *ngSwitchCase="DocumentStatus.DEFAULT" class="icon-container">
+            <img class="file-icon" src="assets/document.svg" alt="document icon">
+        </div>
+
+        <div *ngSwitchCase="DocumentStatus.HOVERED" class="hover-container">
+            <div class="icon-container">
+                <img class="icon download" src="assets/download.svg" alt="download" (click)="onFileInteraction('download')">
+            </div>
+            <div class="icon-container">
+                <img class="icon view" src="assets/view.svg" alt="view" (click)="onFileInteraction('visualize')">
+            </div>
+            <div class="icon-container">
+                <img class="icon delete" src="assets/bin.svg" alt="delete" (click)="delete()">
+            </div>
+            <div class="icon-container">
+                <img class="icon edit" src="assets/edit.svg" alt="edit" (click)="edit()">
+            </div>
+        </div>
+
+        <div *ngSwitchCase="DocumentStatus.EDIT" class="edit-container">
+            <div class="icon-container">
+                <img class="icon cancel" src="assets/cancel.svg" alt="save" (click)="discardChange()">
+            </div>
+            <div class="icon-container">
+                <img class="icon save" src="assets/save.svg" alt="save" (click)="saveChange()">
+            </div>
+        </div>
+    </div>
+
+    <div class="tags-container">
+        <app-select-tag
+            *ngIf="status === DocumentStatus.EDIT"
+            [tagsList]="tagsList"
+            [filterTags]="document.tags"
+            [inDarkBackground]="true"
+            [placeholder]="'Add tag'"
+            (onSubmit)="addTag($event)"
+        ></app-select-tag>
+        <div class="tags-list">
+            <ng-template ngFor let-tag [ngForOf]="document.tags">
+                <div class="tag-item">
+                    <div class="tag-label" [style.color]="tag.color">{{ tag.label }}</div>
+                    <img class="tag-delete" src="assets/bin.svg" alt="delete icon" (click)="removeTag(tag)">
+                </div>
+            </ng-template>
+        </div>
+
+    </div>
+</div>

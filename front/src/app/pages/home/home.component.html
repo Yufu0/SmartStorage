@@ -1,0 +1,33 @@
+<div
+    class="home-container"
+    [class.dirty]="isDirty"
+>
+    <div class="content">
+        <ol class="page-header">
+            <li routerLink="/home/search" [class.active]="currentPage === EPage.SEARCH" (click)="changeCurrentPage(EPage.SEARCH)">Search</li>
+            <li routerLink="/home/upload" [class.active]="currentPage === EPage.UPLOAD" (click)="changeCurrentPage(EPage.UPLOAD)">Upload</li>
+        </ol>
+        <div class="page">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+
+    <div
+        class="tags-panel"
+        [class.active]="hasTagsPanel"
+    >
+        <div class="inner-marker" (click)="showTagsPanel()">
+            <img src="assets/tag.svg" alt="tag-icon">
+        </div>
+
+        <app-tags-panel
+            class="inner-panel"
+            (onClose)="hideTagsPanel()"
+        >
+        </app-tags-panel>
+    </div>
+
+    <div class="modal-container">
+        <app-modal></app-modal>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="login-container">
+    <div class="login-form">
+        <div class="login-form-inner">
+            <app-input-login [placeholder]="'Username'" [type]="'text'" (fieldValueEvent)="username = $event"></app-input-login>
+            <app-input-login [placeholder]="'Password'" [type]="'password'" (fieldValueEvent)="password = $event"></app-input-login>
+            <button (click)="login()">Login</button>
+        </div>
+    </div>
+    <div class="right-side">
+        <div class="text">SmartStorage</div>
+        <div class="image-container">
+            <img src="assets/smartstorage.png" alt="logo">
+        </div>
+    </div>
+</div>
