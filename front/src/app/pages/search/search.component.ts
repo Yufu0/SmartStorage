@@ -9,7 +9,7 @@ import {SelectTagComponent} from "../../components/select-tag/select-tag.compone
 import {SearchResponseModel} from "../../models/searchResponseModel";
 import {DocumentComponent} from "../../components/document/document.component";
 import {DocumentModel} from "../../models/documentModel";
-import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
+import {ModalService} from "../../services/modal.service";
 
 @Component({
     selector: 'app-search',
@@ -26,6 +26,7 @@ import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
     styleUrl: './search.component.css'
 })
 export class SearchComponent implements OnInit {
+
     filterName: string = '';
     filterTags: TagModel[] = [];
 
@@ -35,29 +36,38 @@ export class SearchComponent implements OnInit {
 
     searchResponse: SearchResponseModel = new SearchResponseModel('', []);
 
-    constructor(private fileService: FileService, private tagService: TagsService) {
+    constructor(private fileService: FileService, private tagService: TagsService, private modalService: ModalService) {
     }
 
     ngOnInit() {
         this.tagService.tags.subscribe(tags => {
             this.tagsList = tags;
         });
+        this.search(true);
     }
 
     onSelectTag(tag: TagModel) {
         this.filterTags.push(tag);
+        this.search(true);
     }
 
     search(autoSearch: boolean = false) {
-        if(!this.hasRAG)
-            this.fileService.searchFiles(this.filterName, this.filterTags).subscribe(searchResponse => {
-                console.log('aaaa', searchResponse)
+        if(!this.hasRAG) {
+            this.modalService.showLoader();
+            this.fileService.searchFiles(this.filterName, this.filterTags).subscribe((searchResponse: SearchResponseModel) => {
+                this.modalService.hideLoader();
+                searchResponse.documents = searchResponse.documents.sort((a, b) => a.filename.localeCompare(b.filename));
                 this.searchResponse = searchResponse;
             });
-        if(this.hasRAG && !autoSearch)
-            this.fileService.searchFilesWithRAG(this.filterName, this.filterTags).subscribe(searchResponse => {
+        }
+        if(this.hasRAG && !autoSearch && this.filterName !== ''){
+            this.modalService.showLoader();
+            this.fileService.searchFilesWithRAG(this.filterName, this.filterTags).subscribe((searchResponse: SearchResponseModel) => {
+                this.modalService.hideLoader();
+                searchResponse.documents = searchResponse.documents.sort((a, b) => a.filename.localeCompare(b.filename));
                 this.searchResponse = searchResponse;
             });
+        }
     }
 
     onChange() {
@@ -68,9 +78,17 @@ export class SearchComponent implements OnInit {
 
     removeTag(tag: TagModel) {
         this.filterTags = this.filterTags.filter(t => t.label !== tag.label);
+        this.search(true);
     }
 
     onDocumentDestroy(document: DocumentModel) {
         this.searchResponse.documents = this.searchResponse.documents.filter(d => d.filename !== document.filename);
+    }
+
+    onSliderChange(hisCurrentlyWithRag: boolean) {
+        if(hisCurrentlyWithRag)
+            this.searchResponse = new SearchResponseModel('', []);
+        else
+            this.search(true);
     }
 }

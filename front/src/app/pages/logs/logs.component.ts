@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {LogModel} from "../../models/logModel";
 import {LogsService} from "../../services/logs.service";
 import {DatePipe, NgClass, NgForOf} from "@angular/common";
+import {RouterLink} from "@angular/router";
 
 @Component({
     selector: 'app-logs',
@@ -9,7 +10,8 @@ import {DatePipe, NgClass, NgForOf} from "@angular/common";
     imports: [
         NgForOf,
         NgClass,
-        DatePipe
+        DatePipe,
+        RouterLink
     ],
     templateUrl: './logs.component.html',
     styleUrl: './logs.component.css'

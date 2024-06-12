@@ -24,6 +24,7 @@
     <div class="ai-slider">
         <app-slider-rag
             [(state)]="hasRAG"
+            (onChanges)="onSliderChange($event)"
         ></app-slider-rag>
     </div>
 

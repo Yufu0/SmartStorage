@@ -11,9 +11,11 @@ export class SliderRagComponent {
 
     @Input() state: boolean = false;
     @Output() stateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() onChanges: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     toggle() {
         this.state = !this.state;
         this.stateChange.emit(this.state);
+        this.onChanges.emit(this.state);
     }
 }
