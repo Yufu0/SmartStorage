@@ -1,0 +1,104 @@
+.document {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--dark-black);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.filename {
+    color: var(--white);
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+    overflow: scroll;
+}
+
+.filename::-webkit-scrollbar {
+    display: none;
+}
+
+.document-center-container {
+    display: flex;
+    width: 70%;
+    height: 100px;
+    cursor: pointer;
+    gap: 10px;
+}
+
+.document-center-container .icon-container {
+    display: flex;
+    background-color: #191919FF;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.document-center-container .hover-container {
+    display: grid;
+    grid-template: "view download" 50%
+                    "delete edit" 50% / 50% 50%;
+    width: 100%;
+    gap: 5px;
+    padding: 5px;
+}
+
+.document-center-container .edit-container {
+    display: flex;
+    gap: 5px;
+    padding: 5px;
+}
+
+.document-center-container .icon-container img {
+    width: 100%;
+}
+
+.document-center-container .icon-container:hover {
+    border: 1px solid var(--green);
+    border-radius: 10px;
+}
+
+.tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+}
+
+.tags-list:has(.tag-item) {
+    margin-top: 10px;
+}
+
+.tag-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--black);
+    padding: 5px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.tag-delete {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: color-mix(in srgb, var(--black), transparent 10%);
+    transform: translateY(100%);
+    transition: transform 0.5s ease;
+}
+
+.edit .tag-item:hover .tag-delete {
+    transform: translateY(0);
+}

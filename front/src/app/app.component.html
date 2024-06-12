@@ -1,0 +1,27 @@
+<div class="header">
+    <div class="left">
+        <div class="logo">
+            <img class="logo" src="assets/smartstorage.png" alt="logo">
+        </div>
+        <div class="title">SmartStorage</div>
+    </div>
+
+    <div class="right">
+        <app-status
+            [subject]="utilitiesService.ragStatus"
+            [label]="'IA status'"
+        ></app-status>
+        <app-status
+            [subject]="utilitiesService.applicationStatus"
+            [label]="'Server status'"
+        ></app-status>
+
+        <div class="log-button" routerLink="/logs">Logs</div>
+
+        <div class="switch-mode" (click)="switchMode()">
+            <img *ngIf="isLightMode" src="assets/moon.svg" alt="moon">
+            <img *ngIf="!isLightMode" src="assets/sun.svg" alt="sun">
+        </div>
+    </div>
+</div>
+<router-outlet></router-outlet>

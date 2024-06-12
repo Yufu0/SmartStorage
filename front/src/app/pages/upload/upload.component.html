@@ -1,0 +1,31 @@
+<div class="input-file-container">
+    <div class="file-drop-area"
+         [class.drag-over]="dragOver"
+         (drop)="onDrop($event)"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         (dragend)="onDragEnd($event)"
+         (change)="onFileSelected($event)"
+         (click)="inputFile.click()"
+    >
+        <p class="input-file-text">Drop the files here</p>
+        <input #inputFile type="file" multiple hidden>
+    </div>
+
+    <div *ngIf="files.length !== 0" class="buttons-container">
+        <p class="input-file-text">{{files.length}} files selected</p>
+        <button id="clear-files" class="button" (click)="clear()">Clear</button>
+        <button id="upload-files" class="button" (click)="upload()">Upload</button>
+    </div>
+
+    <div class="file-list">
+        <div class="file-item" *ngFor="let file of files; let i = index">
+            <app-document-upload
+                [(file)]="files[i]"
+                [tagsList]="tagsList"
+                (destroy)="removeFile(file)"
+            >
+            </app-document-upload>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - var(--header-height) - 10px);
+    padding: 0 20px;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+.login-form {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+}
+
+.login-form-inner {
+    width: min(100%, 450px);
+}
+
+button {
+    all: unset;
+    padding: 10px 30px;
+    color: var(--white);
+    background-color: var(--green);
+    border-radius: 10px;
+    font-size: 30px;
+    margin: 10px 0;
+    border: 1px solid var(--green);
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+
+.right-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    flex: 1;
+    gap: 20px;
+}
+
+.right-side .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+
+}
+
+.right-side .image-container img {
+    max-height: 100%;
+    max-width: 100%;
+    border-radius: 20px;
+}
+
+.right-side .text {
+    font-family: "Fira Code", monospace;
+    font-weight: bold;
+    color: var(--white);
+    font-size: 3em;
+}

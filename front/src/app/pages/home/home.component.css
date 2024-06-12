@@ -1,0 +1,203 @@
+.home-container {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: calc(100vh - var(--header-height) - 10px);
+    padding: 10px;
+    box-sizing: border-box;
+    gap: 10px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+}
+
+
+ol.page-header {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    width: 100%;
+    gap: 10px;
+}
+
+ol.page-header > li {
+    flex: 1;
+    text-align: center;
+    color: var(--white);
+    background-color: var(--dark-black);
+    font-size: 1.5em;
+    border-radius: 10px;
+    margin: 0;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+ol.page-header > li.active {
+    border: 1px solid var(--green);
+}
+
+ol.page-header > li:hover {
+    background-color: var(--green);
+}
+
+.content {
+    display: flex;
+    align-items: center;
+}
+
+.page {
+    margin-top: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.tags-panel {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    height: 65px;
+    width: 65px;
+    background-color: var(--green);
+    color: var(--white);
+    border-radius: 50%;
+    transition: transform 0.2s ease-in-out;
+    box-sizing: border-box;
+}
+
+.inner-marker {
+    padding: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+    cursor: pointer;
+    animation: markerDelayAppear 0.5s ease-in-out;
+}
+
+.inner-panel {
+    height: 100%;
+}
+
+.tags-panel.active .inner-marker,
+.tags-panel:not(.active) .inner-panel{
+    display: none;
+}
+
+.tags-panel.active {
+    position: relative;
+    flex: 1;
+    max-width: 320px;
+    top: 0;
+    right: 0;
+    height: 100%;
+    animation: zoomOut 0.5s ease-in-out;
+    border-radius: 20px;
+}
+
+.dirty .tags-panel:not(.active) {
+    animation: zoomIn 0.5s ease-in-out;
+}
+
+@keyframes zoomOut {
+    0% {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: calc(min((100% - 30px) / 3, 320px));
+        height: calc(100% - 20px);
+        clip-path: ellipse(calc(65px / 2) calc(65px / 2) at calc(100% - (65px / 2)) calc(100% - (65px / 2)));
+    }
+    100% {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: calc(min((100% - 30px) / 3, 320px));
+        height: calc(100% - 20px);
+        clip-path: ellipse(150% 130% at 100% 100%);
+    }
+}
+
+@keyframes zoomIn {
+    0% {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        border-radius: 20px;
+        width: calc(min((100% - 30px) / 3, 320px));
+        height: calc(100% - 20px);
+        clip-path: ellipse(150% 130% at 100% 100%);
+    }
+    100% {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        border-radius: 20px;
+        width: calc(min((100% - 30px) / 3, 320px));
+        height: calc(100% - 20px);
+        clip-path: ellipse(calc(65px / 2) calc(65px / 2) at calc(100% - (65px / 2)) calc(100% - (65px / 2)));
+    }
+}
+
+@keyframes markerDelayAppear {
+    0%, 99% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.home-container:has(.tags-panel.active) .content {
+    animation: slideLeft 0.5s ease-in-out;
+}
+
+.home-container.dirty:not(:has(.tags-panel.active)) .content {
+    animation: slideRight 0.5s ease-in-out;
+}
+
+@keyframes slideLeft {
+    0% {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: calc(100% - 20px);
+        box-sizing: border-box;
+    }
+    45%, 100% {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: calc(max((100% - 30px)* 2 / 3, 100% - 320px - 10px - 20px));
+        box-sizing: border-box;
+    }
+}
+
+@keyframes slideRight {
+    0%, 10% {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: calc(max((100% - 30px)* 2 / 3, 100% - 320px - 10px - 20px));
+        box-sizing: border-box;
+    }
+    100% {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: calc(100% - 20px);
+        box-sizing: border-box;
+    }
+}
+
+.modal-container {
+    position: fixed;
+    z-index: 5;
+    left: 0;
+    top: calc(var(--header-height) + 10px);
+    width: 100%;
+    height: calc(100vh - var(--header-height) - 10px);
+    pointer-events: none;
+}

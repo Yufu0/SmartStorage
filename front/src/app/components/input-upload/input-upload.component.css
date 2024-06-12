@@ -1,0 +1,40 @@
+.input-container {
+    position: relative;
+    width: 100%;
+}
+
+label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: var(--red);
+    background-color: var(--dark-black);
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    pointer-events: none;
+    z-index: 1;
+    transition: all 0.5s ease;
+}
+
+label.focus {
+    color: var(--white);
+    font-size: 15px;
+    padding: 0 10px;
+    top: 0;
+    left: 25px;
+    transform: translate(0, 0);
+}
+
+input {
+    all: unset;
+    position: relative;
+    padding: 10px 10px;
+    color: var(--white);
+    border-radius: 10px;
+    font-size: 20px;
+    margin: 10px 0;
+    border: 1px solid var(--white);
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
