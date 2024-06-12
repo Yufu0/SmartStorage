@@ -3,8 +3,57 @@ version: '3'
 services:
     sftp:
         image: atmoz/sftp
-        volumes:
-            - ./files:/home/michel/files
+        env_file:
+            - .env
+        command: ${SFTP_USERNAME}:${SFTP_PASSWORD}:${SFTP_PORT}
         ports:
-            - "2121:22"
-        command: michel:pass:1001
+            - "${SFTP_PORT}:${SFTP_PORT}"
+        volumes:
+            - sftp:/home/${SFTP_USERNAME}/files
+        networks:
+            - app-net
+
+    mongodb:
+        image: mongo:latest
+        container_name: mongodb
+        ports:
+            - "51512:27017"
+        env_file:
+            - .env
+        volumes:
+            - mongodb:/data/db
+            - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+        networks:
+            - app-net
+
+    front:
+        build: ./front
+        container_name: angular
+        ports:
+            - "${APP_PORT}:4200"
+        env_file:
+            - .env
+        networks:
+            - app-net
+        depends_on:
+            - back
+
+    back:
+        build: ./back
+        container_name: springboot
+        ports:
+            - "8080:8080"
+        env_file:
+            - .env
+        networks:
+            - app-net
+        command: bash -c "ssh-keyscan -H -t rsa,ecdsa -p 22 sftp >> /usr/src/app/known_hosts && mvn spring-boot:run"
+        depends_on:
+            - mongodb
+            - sftp
+networks:
+    app-net:
+
+volumes:
+    mongodb:
+    sftp:
