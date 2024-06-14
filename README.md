@@ -22,6 +22,10 @@ Vous pouver :
         - NVIDIA Container Toolkit : https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
 
 # Environnement
+
+Username: `username`
+Password: `password` (BCrypt hash)
+
 ```
 KNOW_HOSTS_FILE=/usr/src/app/known_hosts
 
