@@ -1,5 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../Environment";
+
+const baseUrl = environment.serverBaseUrl + '/auth';
 
 @Injectable({
     providedIn: 'root'
@@ -15,6 +18,6 @@ export class AuthService {
             password: password
         }
 
-        return this.http.post('http://localhost:8080/auth/login', body/*, httpOptions*/)
+        return this.http.post(baseUrl + '/login', body)
     }
 }

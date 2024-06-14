@@ -33,7 +33,7 @@ export class InputTagsPanelComponent {
     ngOnInit() {
         this.focus = this.tag !== undefined /*&& this.tag.label !== ''*/;
         this.utilitiesService.documentClickedTarget.subscribe(target => {
-            this.focus = this.input && this.input.nativeElement.contains(target) /*|| this.tag.label !== ''*/;
+            this.focus = this.input && this.input.nativeElement.contains(target) || (this.tag !== undefined && this.tag.label !== '');
         });
     }
 
