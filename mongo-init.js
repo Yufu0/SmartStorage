@@ -1,17 +1,21 @@
-db = db.getSiblingDB('smartstorage');
+const username = process.env.APP_USERNAME;
+const password = process.env.APP_PASSWORD;
+const collectionName = process.env.MONGO_COLLECTION_USERS;
 
-db.createCollection('users');
+const database = db.getSiblingDB('smartstorage');
 
+database.createCollection(collectionName);
+database.getCollection(collectionName).deleteMany({})
 
-filter = { username: 'ok' };
+const filter = { username: username };
 
-update = {
+const update = {
     $setOnInsert: {
-        username: 'ok',
-        password: '$2y$10$px3i3EKZlvLxL5/9BN7J0.wbkRzSTxKkgqRKHpGD2ffD8weKqFyia'
+        username: username,
+        password: password
     }
 };
 
 const options = { upsert: true };
 
-db.users.updateOne(filter, update, options);
+database.getCollection(collectionName).updateOne(filter, update, options);
