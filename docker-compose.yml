@@ -4,6 +4,8 @@ services:
     sftp:
         build:
             dockerfile: ./Dockerfile_SFTP
+            args:
+                USER: ${SFTP_USERNAME}
         env_file:
             - .env
         command: ${SFTP_USERNAME}:${SFTP_PASSWORD}:${SFTP_PORT}
@@ -58,6 +60,7 @@ services:
         depends_on:
             - mongodb
             - sftp
+
     rag-mongodb:
         image: mongodb/mongodb-atlas-local
         container_name: rag-mongodb
@@ -71,6 +74,7 @@ services:
         restart: always
         networks:
             - rag-net
+
     rag:
         build:
             dockerfile: ./rag/Dockerfile
@@ -87,6 +91,7 @@ services:
         restart: always
         networks:
             - rag-net
+
     ollama:
         build:
             dockerfile: ./Dockerfile_OLLAMA
@@ -108,6 +113,7 @@ services:
                           capabilities: [ gpu ]
         networks:
             - rag-net
+
 networks:
     app-net:
     rag-net:

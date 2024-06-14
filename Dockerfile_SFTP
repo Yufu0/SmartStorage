@@ -1,4 +1,6 @@
 FROM atmoz/sftp
 
-RUN mkdir -p /home/michel/files
-RUN chmod 777 /home/michel/files
+ARG USER
+
+RUN mkdir -p /home/$USER/files
+RUN chmod 777 /home/$USER/files
