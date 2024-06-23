@@ -15,7 +15,7 @@ public class CorsConfiguration {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://www.ip4.pingouinduturfu.fr:1194")
+                        .allowedOrigins(Environment.ANGULAR_HOST + ":" + Environment.ANGULAR_PORT)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .exposedHeaders("Authorization")

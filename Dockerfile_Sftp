@@ -1,0 +1,8 @@
+FROM atmoz/sftp
+
+ARG USER
+
+RUN mkdir -p /home/$USER/files
+RUN chmod 777 /home/$USER/files
+
+RUN echo "PORT 2222" >> /etc/ssh/sshd_config

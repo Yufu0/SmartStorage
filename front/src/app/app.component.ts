@@ -5,6 +5,7 @@ import {LoginComponent} from "./pages/login/login.component";
 import {StatusComponent} from "./components/status/status.component";
 import {UtilitiesService} from "./services/utilities.service";
 import {TagsService} from "./services/tags.service";
+import {WebsocketService} from "./services/websocket.service";
 
 @Component({
     selector: 'app-root',
@@ -17,7 +18,10 @@ export class AppComponent implements OnInit {
 
     isLightMode: boolean = false;
 
-    constructor(public utilitiesService: UtilitiesService, private tagService: TagsService) {
+    constructor(
+        public utilitiesService: UtilitiesService,
+        private tagService: TagsService,
+        private webSocketService: WebsocketService) {
     }
 
     @HostListener('document:click', ['$event'])
@@ -28,6 +32,10 @@ export class AppComponent implements OnInit {
     ngOnInit() {
         this.tagService.fetchTags();
         this.utilitiesService.ping();
+
+        this.webSocketService.openWebSocket();
+        this.webSocketService.connect();
+
         setInterval(() => this.utilitiesService.ping(), 5000);
     }
 

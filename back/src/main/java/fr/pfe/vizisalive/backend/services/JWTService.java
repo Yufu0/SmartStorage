@@ -20,7 +20,7 @@ public class JWTService {
     private MongoService mongoService;
 
     public String getJwtFromCookies(HttpServletRequest request) {
-        Cookie cookie = WebUtils.getCookie(request, Environment.COOKIE_NAME);
+        Cookie cookie = WebUtils.getCookie(request, Environment.JWT_COOKIE_NAME);
         if (cookie != null)
             return cookie.getValue();
         else
@@ -29,11 +29,11 @@ public class JWTService {
 
     public ResponseCookie generateJwtCookie(CustomUserDetailsModel user) {
         String jwt = generateTokenFromUsername(user.getUsername());
-        return ResponseCookie.from(Environment.COOKIE_NAME, jwt).path("/api").maxAge(Environment.JWT_EXPIRATION_MS).httpOnly(true).build();
+        return ResponseCookie.from(Environment.JWT_COOKIE_NAME, jwt).path("/api").maxAge(Environment.JWT_EXPIRATION_MS).httpOnly(true).build();
     }
 
     public ResponseCookie clearJwtCookie() {
-        return ResponseCookie.from(Environment.COOKIE_NAME, null).path("/api").build();
+        return ResponseCookie.from(Environment.JWT_COOKIE_NAME, null).path("/api").build();
     }
 
     public String getUserNameFromJwtToken(String token) {

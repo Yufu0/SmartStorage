@@ -1,9 +1,22 @@
 version: '3'
 
 services:
+    mongodb:
+        image: mongodb/mongodb-atlas-local
+        ports:
+            - "${MONGO_PORT}:${MONGO_PORT}"
+        environment:
+            - MONGODB_INITDB_ROOT_USERNAME=${MONGO_USER}
+            - MONGODB_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+        volumes:
+            - mongodb_data:/data/db
+            - mongodb_config:/data/configdb
+        networks:
+            - smartstorage-net
+
     sftp:
         build:
-            dockerfile: ./Dockerfile_SFTP
+            dockerfile: ./Dockerfile_Sftp
             args:
                 USER: ${SFTP_USERNAME}
         env_file:
@@ -14,35 +27,17 @@ services:
         volumes:
             - sftp:/home/${SFTP_USERNAME}/files
         networks:
-            - app-net
-
-    mongodb:
-        image: mongo:latest
-        container_name: mongodb
-        ports:
-            - "51512:27017"
-        environment:
-            MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME_APP}
-            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD_APP}
-            MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE_APP}
-            APP_USERNAME: ${APP_USERNAME}
-            APP_PASSWORD: ${APP_PASSWORD}
-            MONGO_COLLECTION_USERS: ${MONGO_COLLECTION_USERS}
-        volumes:
-            - mongodb:/data/db
-            - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-        networks:
-            - app-net
+            - smartstorage-net
 
     front:
         build: ./front
         container_name: angular
         ports:
-            - "${APP_PORT}:4200"
+            - "${ANGULAR_PORT}:${ANGULAR_PORT}"
         env_file:
             - .env
         networks:
-            - app-net
+            - smartstorage-net
         depends_on:
             - back
 
@@ -50,39 +45,26 @@ services:
         build: ./back
         container_name: springboot
         ports:
-            - "8080:8080"
+            - "${API_PORT}:${API_PORT}"
         env_file:
             - .env
         networks:
-            - app-net
-            - rag-net
-        command: bash -c "ssh-keyscan -H -t rsa,ecdsa -p 22 sftp >> /usr/src/app/known_hosts && mvn spring-boot:run"
+            - smartstorage-net
+        command: bash -c "ssh-keyscan -H -t rsa,ecdsa -p ${SFTP_PORT} sftp >> /usr/src/app/known_hosts && mvn spring-boot:run"
         depends_on:
-            - mongodb
-            - sftp
-
-    rag-mongodb:
-        image: mongodb/mongodb-atlas-local
-        container_name: rag-mongodb
-        env_file:
-            - .env
-        ports:
-            - 27777:27017
-        volumes:
-            - mongodb_data:/data/db
-            - mongodb_config:/data/configdb
-        restart: always
-        networks:
-            - rag-net
+            mongodb:
+                  condition: service_healthy
+            sftp:
+                  condition: service_started
 
     rag:
         build:
             dockerfile: ./rag/Dockerfile
         ports:
-            - 8000:8000
+            - "8000:8000"
         depends_on:
-            rag-mongodb:
-                condition: service_healthy
+            #            rag-mongodb:
+            #                condition: service_healthy
             ollama:
                 condition: service_started
         env_file:
@@ -90,13 +72,13 @@ services:
         container_name: rag
         restart: always
         networks:
-            - rag-net
+            - smartstorage-net
 
     ollama:
         build:
-            dockerfile: ./Dockerfile_OLLAMA
+            dockerfile: ./Dockerfile_Ollama
         ports:
-            - 4444:11434
+            - "4444:11434"
         volumes:
             - ollama_volume:/root/.ollama
         env_file:
@@ -112,11 +94,10 @@ services:
                           count: 1
                           capabilities: [ gpu ]
         networks:
-            - rag-net
+            - smartstorage-net
 
 networks:
-    app-net:
-    rag-net:
+    smartstorage-net:
 
 
 volumes:

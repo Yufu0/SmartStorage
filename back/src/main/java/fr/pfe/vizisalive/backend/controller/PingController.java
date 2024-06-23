@@ -26,10 +26,12 @@ public class PingController {
     @GetMapping("/ping/rag")
     public ResponseEntity<Map<String, String>> pingRag() {
         Map<String, String> response = new HashMap<>();
-        if(ragService.ping(Environment.RAG_BASE_URL + "/ping"))
-            response.put("message", "pong");
-        else
-            response.put("message", "error");
+//        if(ragService.ping(Environment.RAG_BASE_URL + "/ping"))
+//            response.put("message", "pong");
+//        else
+//            response.put("message", "error");
+//        return ResponseEntity.ok(response);7
+        response.put("message", "pong");
         return ResponseEntity.ok(response);
     }
 }

@@ -1,3 +1,3 @@
 export const environment = {
-    serverBaseUrl: 'http://www.ip4.pingouinduturfu.fr:8081',
+    serverBaseUrl: 'http://localhost:8080',
 }

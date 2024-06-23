@@ -29,10 +29,11 @@ public class MongoService {
     @PostConstruct
     private void initialize() {
         try {
-            MongoClient mongoClient = MongoClients.create("mongodb://" + Environment.MONGO_USER + ":" + Environment.MONGO_PASS + "@" + Environment.MONGO_HOST + ":" + Environment.MONGO_PORT);
-            this.database = mongoClient.getDatabase(Environment.MONGO_DB);
+            MongoClient mongoClient = MongoClients.create("mongodb://" + Environment.MONGO_USER + ":" + Environment.MONGO_PASSWORD + "@" + Environment.MONGO_HOST + ":" + Environment.MONGO_PORT + "/?directConnection=true");
+            this.database = mongoClient.getDatabase(Environment.MONGO_DATABASE);
         } catch (Exception e) {
             System.out.println("MongoDB connection failed");
+            System.out.println(e.getMessage());
         }
     }
 

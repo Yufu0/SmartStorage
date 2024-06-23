@@ -50,7 +50,7 @@ public class SFTPService {
     private ChannelSftp getChannel() {
         try {
             JSch jsch = new JSch();
-            jsch.setKnownHosts(Environment.KNOW_HOSTS_FILE);
+            jsch.setKnownHosts(Environment.API_KNOW_HOSTS_FILE);
             Session jschSession = jsch.getSession(Environment.SFTP_USERNAME, Environment.SFTP_HOST, Integer.parseInt(Environment.SFTP_PORT));
             jschSession.setPassword(Environment.SFTP_PASSWORD);
             jschSession.connect();

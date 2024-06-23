@@ -14,7 +14,7 @@ from rag import Pipeline, DocumentLoader
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.getenv("BACKEND_URL")],
+    allow_origins=[os.getenv("API_HOST")],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
